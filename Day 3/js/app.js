@@ -4,6 +4,6 @@ console.log('Script has loaded.');
 if('serviceWorker' in navigator) {
     console.log("In if statement");
     navigator.serviceWorker
-        .register('/js/sw.js')
-        .then(function() { console.log('Service Worker Registered'); });
+        .register('js/sw.js')
+        .then(() =>  console.log('Service Worker Registered') );
 }
