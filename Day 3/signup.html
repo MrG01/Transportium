@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#00D1B2"/>
+
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <link rel="manifest" href="manifest.json">
+
+    <title>Sign up page</title>
+</head>
+<body>
+<section class="section">
+    <a href="index.html" style="padding: 1em;" class="button">Back to Login</a>
+
+    <div class="has-text-centered container">
+        <img src="images/walking-logo-clipart-1@192.png" alt="Transportium" id="logo">
+    </div>
+    <form action="" method="post">
+        <div class="field is-horizontal">
+            <div class="field-body">
+                <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                        <input id="name" type="text" class="input is-rounded" placeholder="Name">
+                        <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                </span>
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                        <input id="surname" type="text" class="input is-rounded" placeholder="Surname">
+                        <span class="icon is-small is-left">
+                    <i class="fas fa-user"></i>
+                </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control has-icons-left">
+                <input id="email" type="email" class="input is-rounded" placeholder="Email">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                </span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control has-icons-left">
+                <input id="username" type="text" class="input is-rounded" placeholder="Username">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-signature"></i>
+                </span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control has-icons-left">
+                <input id="password" type="password" class="input is-rounded" placeholder="Password">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control has-icons-left">
+                <input id="verifyPassword" type="password" class="input is-rounded" placeholder="Verify Password">
+                <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                </span>
+            </div>
+        </div>
+        <div class="field is-grouped is-grouped-centered">
+                <button type="submit" class="button is-primary">Sign up</button>
+        </div>
+    </form>
+</section>
+
+<script src="js/app.js"></script>
+</body>
+</html>
