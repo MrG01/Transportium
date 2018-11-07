@@ -5,7 +5,7 @@ Task for day 3 invovled
    - Adding a manifest.json
    
   
-Shared link: [Project link](https://day3-qxteopgxrq.now.sh)
+Shared link: [Project link](https://day3-tmynfsedfz.now.sh)
 
 Tools used:
 - [BULMA](https://bulma.io) - CSS Framework

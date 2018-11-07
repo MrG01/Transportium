@@ -4,15 +4,15 @@ self.addEventListener('install', function(e){
             .then(cache => {
                 console.log('[Service Worker] Caching all: app shell');
                 return cache.addAll([
-                    'index.html',
-                    'signup.html',
-                    'manifest.json',
-                    'css/app.css',
-                    'css/bulma.min.css',
-                    'images/walking-logo-clipart-1@192.png',
-                    'images/walking-logo-clipart-1@512.png',
-                    'js/app.js',
-                    'js/sw.js',
+                    '/index.html',
+                    '/signup.html',
+                    '/manifest.json',
+                    '/css/app.css',
+                    '/css/bulma.min.css',
+                    '/images/walking-logo-clipart-1@192.png',
+                    '/images/walking-logo-clipart-1@512.png',
+                    '/js/app.js',
+                    '/js/sw.js',
                 ]);
             }).catch(error => {
                 console.log(error.message)
