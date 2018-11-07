@@ -3,6 +3,9 @@
 Task for day 3 invovled 
    - Installing the service worker
    - Adding a manifest.json
+   
+  
+Shared link: [Project link](https://day3-qxteopgxrq.now.sh)
 
 Tools used:
 - [BULMA](https://bulma.io) - CSS Framework
