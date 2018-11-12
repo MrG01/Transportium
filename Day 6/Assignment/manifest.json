@@ -1,0 +1,21 @@
+{
+  "name": "Transportium",
+  "short_name": "Transportium",
+  "icons": [
+    {
+      "src": "/images/walking-logo-clipart-1@192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/walking-logo-clipart-1@512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "background_color": "#ffffff",
+  "description": "Finding you transport routes on the go",
+  "display": "fullscreen",
+  "start_url": "/index.html",
+  "theme_color": "#00D1B2"
+}

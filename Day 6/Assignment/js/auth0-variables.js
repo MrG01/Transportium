@@ -1,0 +1,6 @@
+export const AUTH_CONFIG = {
+    clientId: '{CLIENT_ID}',
+    domain: '{DOMAIN}',
+    callbackUrl: 'http://localhost:3000/callback',
+    apiUrl: '{API_IDENTIFIER}'
+}
