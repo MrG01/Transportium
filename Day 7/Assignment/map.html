@@ -1,27 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#00D1B2"/>
     <title>Map</title>
 
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="manifest" href="manifest.json">
+
     <link href='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 <section>
     <div id='map'></div>
+    <div id="app" class="container" style="z-index: 0">
+        <form v-on:submit.prevent>
+            <div class="field">
+                <input class="input is-rounded" id="start" placeholder="Start" type="text"
+                       v-model="start" maxlength="256"
+                       @keyup="getStart">
+                <input class="input is-rounded" id="destination" placeholder="Destination" type="text"
+                       v-model="destination" maxlength="256"
+                       @keyup="getDest">
+                <button type="submit" class="button is-primary is-rounded" @click="route">Route</button>
+            </div>
+            <div style="zindex: 10;">
+                <div class="startSugg notification" v-if="hasStartItems" v-for="item in startItems"
+                     @click="setPoint(item, true)">
+                    {{ item.place_name }}
+                </div>
 
+                <div class=" startSugg notification" v-if="hasDestiItems" v-for="item in destiItems"
+                    @click="setPoint(item, false)">
+                    {{ item.place_name }}
+                </div>
 
-    <script src='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibXJsb3N0Y2hhciIsImEiOiJjam11bDZ5bXAxbDJnM3BsOHU3bzVqYnB0In0.wKmk4XFOrj1NIPocvdl7Zw';
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v10',
-            center: [18.4241, -33.9249],
-            zoom: 12
-        });
-    </script>
+            </div>
+        </form>
+    </div>
 </section>
+<script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
+<script src="js/lodash_4_17_11.js"></script>
+<script src="js/map.js"></script>
 </body>
 </html>
