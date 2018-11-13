@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form with Validation</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" >
+</head>
+<body>
+<div id="app" class="section">
+    <form methods="POST" action="" class="form">
+        <div class="field">
+            <label for="username" class="label">Username</label>
+            <input class="input" id="username" type="text"
+                   v-model="username"
+                   v-bind:class="{'is-danger': usernameError}"
+                   v-on:keyup="clearUsername">
+            <div class="has-text-danger" v-if="usernameError">
+                <ul>
+                    <li v-for="(error) in usernameErrorMessage">
+                        <span>
+                            {{ error.msg }}
+                        </span> <br>
+                        <span style="margin-left: 15px;">
+                            {{ new Date(error.date).toString() }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="field">
+            <label for="password" class="label">Password</label>
+            <input class="input" id="password" type="password"
+                   v-model="password"
+                   v-bind:class="{'is-danger': passwordError}"
+                   v-on:keyup="clearPassword">
+            <div class="has-text-danger" v-if="passwordError">
+                <ul>
+                    <li v-for="(error) in passwordErrorMessage">
+                        <span>
+                            {{ error.msg }}
+                        </span> <br>
+                        <span style="margin-left: 15px;">
+                            {{ new Date(error.date).toString() }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div >
+            <button class="is-primary button" @click="formSubmit" type="submit">Login</button>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
