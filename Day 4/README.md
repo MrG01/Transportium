@@ -1,15 +1,15 @@
-# Day 2
+# Day 4
 
-Task for day 3 invovled 
-   - Installing the service worker
-   - Adding a manifest.json
+Task for day 4 involved 
+   - Displaying a map full screen.
    
   
-Shared link: [Project link](https://day3-tmynfsedfz.now.sh)
+Shared link: N/A
 
 Tools used:
 - [BULMA](https://bulma.io) - CSS Framework
 - [Font Awesome](https://fontawesome.com) - A tool used for icons
+- [Mapbox](https://www.mapbox.com/) - A tool for map integration
 
 Resources used:
 - [Developers Google](https://developers.google.com/web/fundamentals/web-app-manifest/) - Web App Manifest

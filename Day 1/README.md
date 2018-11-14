@@ -1,6 +1,6 @@
 # Day 1
 
-Task for day 1 invovled 
+Task for day 1 involved 
    - creating a prototype of the android application to be developed at a later stage.
    
    

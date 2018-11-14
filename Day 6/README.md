@@ -1,15 +1,17 @@
-# Day 2
+# Day 6
 
-Task for day 3 invovled 
-   - Installing the service worker
-   - Adding a manifest.json
+Task for day 6 involved 
+   - Using Auth0 to create an seamless login flow
    
   
-Shared link: [Project link](https://day3-tmynfsedfz.now.sh)
+Shared link: N/A
 
 Tools used:
 - [BULMA](https://bulma.io) - CSS Framework
 - [Font Awesome](https://fontawesome.com) - A tool used for icons
+- [Mapbox](https://www.mapbox.com/) - A tool for map integration
+- [Auth0](https://manage.auth0.com/) - Authentication & authorization platform
+- [VueJS](https://vuejs.org) - The Progressive JavaScript Framework
 
 Resources used:
 - [Developers Google](https://developers.google.com/web/fundamentals/web-app-manifest/) - Web App Manifest

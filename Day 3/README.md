@@ -1,6 +1,6 @@
-# Day 2
+# Day 3
 
-Task for day 3 invovled 
+Task for day 3 involved 
    - Installing the service worker
    - Adding a manifest.json
    

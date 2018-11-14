@@ -1,6 +1,6 @@
 # Day 2
 
-Task for day 2 invovled 
+Task for day 2 involved 
    - creating HTML5 design from Day 1's prototypes
    
    
