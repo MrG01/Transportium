@@ -19,12 +19,37 @@ const app = new Vue({
         destination: "",
         hasDestiItems: false,
         destiItems: [],
-        destiCoor: []
+        destiCoor: [],
+
+        routeData: []
     },
     methods: {
         route: function(){
-            console.log(this.startCoor);
-            console.log(this.destiCoor);
+            if(this.startCoor.length > 0 && this.destiCoor.length > 0){
+                this.getRoute();
+            } else {
+                // Give the user an error message here
+            }
+        },
+        getRoute: async function(){
+            await axios.get("https://api.mapbox.com/directions/v5/mapbox/driving/"
+                + this.startCoor[0] + "," + this.startCoor[1] + ";"
+                + this.destiCoor[0] + "," + this.destiCoor[1],{
+                params: {
+                    geometries: "geojson",
+                    access_token: mapboxgl.accessToken
+                }
+            })
+                .then(success => {
+                    //success.data.routes[0].geometry
+                    //.routes[0]
+                    this.routeData = success.data.routes[0].geometry;
+
+                    setMapboxLine(this.routeData);
+                })
+                .catch(error => {
+                    console.log(error.message);
+                });
         },
         getGeoEndpoint: async function(string, isStart = false){
             await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + string + '.json', {
@@ -48,10 +73,10 @@ const app = new Vue({
         },
         getStart: _.debounce(function() {
             this.getGeoEndpoint(this.start, true)
-        }, 1500),
+        }, 500),
         getDest: _.debounce(function() {
             this.getGeoEndpoint(this.destination, false)
-        }, 1500),
+        }, 500),
         setPoint: function(item, isStart = false){
             if(isStart){
                 this.hasStartItems = false;
@@ -79,4 +104,59 @@ function setMapboxMarker(coords){
     new mapboxgl.Marker({draggable: false})
         .setLngLat([coords[0] , coords[1]])
         .addTo(map);
+
+    map.flyTo({
+        center: [
+            coords[0] ,
+            coords[1]
+        ],
+        zoom: 14,
+        speed: 0.7,
+        curve: 1
+    });
+}
+
+function setMapboxLine(coords){
+    map.addLayer({
+        id: 'route',
+        type: 'line',
+        source: {
+            type: 'geojson',
+            data: {
+                type: "Feature",
+                geometry: coords
+            }
+        },
+        paint: {
+            'line-width': 2
+        }
+    });
+
+    var coordinates = coords.coordinates;
+    var length = coordinates.length;
+    var lng = 0;
+    var lat = 0;
+    var num = 0;
+
+    if(length % 2 === 0){
+        num = length/2;
+
+        lng = coordinates[num][0];
+        lat = coordinates[num][1];
+    } else {
+        num = (length+1)/2;
+
+        lng = coordinates[num][0];
+        lat = coordinates[num][1];
+    }
+
+    map.flyTo({
+        center: [
+            lng ,
+            lat
+        ],
+        zoom: 11,
+        speed: 0.7,
+        curve: 1
+    });
 }
