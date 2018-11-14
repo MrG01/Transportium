@@ -1,14 +1,14 @@
 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibXJsb3N0Y2hhciIsImEiOiJjam11bDZ5bXAxbDJnM3BsOHU3bzVqYnB0In0.wKmk4XFOrj1NIPocvdl7Zw';
-const map = new mapboxgl.Map({
+const mapVar = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v10',
     center: [18.6241, -33.9249],
     zoom: 9
 });
 
-const app = new Vue({
+const vueApp = new Vue({
     el: "#app",
     data: {
         start: "",
@@ -103,9 +103,9 @@ const app = new Vue({
 function setMapboxMarker(coords){
     new mapboxgl.Marker({draggable: false})
         .setLngLat([coords[0] , coords[1]])
-        .addTo(map);
+        .addTo(mapVar);
 
-    map.flyTo({
+    mapVar.flyTo({
         center: [
             coords[0] ,
             coords[1]
@@ -117,7 +117,7 @@ function setMapboxMarker(coords){
 }
 
 function setMapboxLine(coords){
-    map.addLayer({
+    mapVar.addLayer({
         id: 'route',
         type: 'line',
         source: {
@@ -150,7 +150,7 @@ function setMapboxLine(coords){
         lat = coordinates[num][1];
     }
 
-    map.flyTo({
+    mapVar.flyTo({
         center: [
             lng ,
             lat
