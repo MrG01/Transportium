@@ -6,7 +6,10 @@ Task for day 8 involved
    - When journey selected, map the route.
    
   
-Shared link: [Project Link](   )
+Shared link: 
+  - [Project Link](https://assignment-owpyxfmitc.now.sh)
+  - [Github Pages]()
+
 
 Tools used:
 - [BULMA](https://bulma.io) - CSS Framework
