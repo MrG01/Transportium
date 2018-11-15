@@ -1,0 +1,29 @@
+#logo {
+    max-width: 25%;
+    padding-bottom: 1.5em;
+}
+body {
+    margin:0;
+    padding:0;
+    top: 0;
+    right: 0;
+}
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.startSugg:hover {
+    cursor: pointer;
+}
+
+.startSugg {
+    margin-bottom: 0 !important;
+    font-size: 10pt;
+}
+
+.bold {
+    font-weight: bold;
+}

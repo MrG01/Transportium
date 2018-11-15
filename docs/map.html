@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#00D1B2"/>
+    <title>Map</title>
+
+    <link rel="manifest" href="manifest.json">
+
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
+    <script src="js/lodash_4_17_11.js"></script>
+</head>
+<body>
+<section>
+    <div id="app" class="container" style="z-index: 10">
+        <form v-on:submit.prevent>
+            <div class="field" style="z-index: 10">
+                <input class="input is-rounded" id="start" placeholder="Start" type="text"
+                       v-model="start" maxlength="256"
+                       @keyup="getStart">
+                <input class="input is-rounded" id="destination" placeholder="Destination" type="text"
+                       v-model="destination" maxlength="256"
+                       @keyup="getDest">
+                <button type="submit" class="button is-primary is-rounded" @click="route">Route</button>
+            </div>
+            <div style="z-index: 10;">
+                <div class="startSugg notification" v-if="hasStartItems" v-for="item in startItems"
+                     @click="setPoint(item, true)">
+                    {{ item.place_name }}
+                </div>
+
+                <div class="startSugg notification" v-if="hasDestiItems" v-for="item in destiItems"
+                     @click="setPoint(item, false)">
+                    {{ item.place_name }}
+                </div>
+
+                <div class="startSugg notification" v-if="hasJourneyItems" v-for="item in journeyItems"
+                     @click="selectItin(item)">
+                    <div class="media">
+                        <div class="media-left">
+                            <div v-if="isTrain(item)">
+                                <span class="icon">
+                                    <i class="fas fa-subway"></i>
+                                </span>
+                            </div>
+                            <div v-else>
+                                <span class="icon">
+                                    <i class="fas fa-walking"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                            <p><span class="bold">Distance:</span> {{ convertToKm(item.distance.value) }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span class="bold">Duration:</span> {{ convertSeconds(item.duration) }}</p>
+                            <p><span class="bold">Depart:</span> {{ new Date(item.departureTime).toLocaleDateString() }}
+                                {{ new Date(item.departureTime).toLocaleTimeString() }}</p>
+                            <p><span class="bold">Arrival:</span> {{ new Date(item.arrivalTime).toLocaleDateString() }}
+                                {{ new Date(item.arrivalTime).toLocaleTimeString() }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id='map'></div>
+</section>
+<script src="js/map.js"></script>
+</body>
+</html>
