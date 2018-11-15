@@ -36,26 +36,6 @@ const vueApp = new Vue({
         } else {
             this.getTokenFromApi();
         }
-
-        this.journeyItems.push({
-            name: "test"
-        })
-        this.journeyItems.push({
-            name: "test"
-        })
-        this.journeyItems.push({
-            name: "test"
-        })
-        this.journeyItems.push({
-            name: "test"
-        })
-        this.journeyItems.push({
-            name: "test"
-        })
-        this.journeyItems.push({
-            name: "test"
-        })
-
     },
     methods: {
         route: function () {
@@ -64,6 +44,7 @@ const vueApp = new Vue({
                 this.getItineraries();
             } else {
                 // Give the user an error message here
+
             }
         },
         getRoute: async function () {
@@ -183,14 +164,112 @@ const vueApp = new Vue({
         },
 
         getItineraries: async function () {
+            var object = {
+                "geometry": {
+                    "type": "MultiPoint",
+                    "coordinates": [
+                        this.startCoor,
+                        this.destiCoor
+                    ]
+                },
+                "maxItineraries": 5
+            };
 
+            await axios.post('https://platform.whereismytransport.com/api/journeys',
+                object, {
+                headers: {
+                    "Content-Type" : "application/json",
+                    Accept: "application/json",
+                    Authorization: "Bearer " + this.myTransAccPoint
+                }})
+                .then(response => {
+                    var data = response.data;
+
+                    this.journeyItems =  data.itineraries;
+                    this.hasJourneyItems = true;
+                })
+                .catch(error => {
+                    console.log(error.message);
+                })
         },
-        selectIten: function (iten) {
+        selectItin: function (itin) {
+            this.hasJourneyItems = false;
 
+            var legs = itin.legs;
+            var geo = [];
+
+            for(const leg of legs){
+                var geometry = leg.geometry.coordinates;
+
+                geometry.forEach(function (element){
+                    geo.push(element);
+                });
+            }
+
+            var geoObject = {
+                type: "LineString",
+                coordinates: geo
+            };
+
+            setMapboxLine(geoObject);
+        },
+        isTrain: function(itin){
+            var flag = false;
+
+            if(itin.legs[1]){
+                var data = itin.legs[1];
+                if(data.type === "Transit"){
+                    flag = true;
+                }
+            }
+
+            return flag;
+        },
+
+        convertSeconds(input){
+            var string = "";
+            var seconds = parseInt(input);
+
+            var months = Math.floor(seconds / (3600*24*30));
+            seconds -= months * 3600 * 24 * 30;
+            var days = Math.floor(seconds / (3600*24));
+            seconds  -= days * 3600 * 24;
+            var hrs   = Math.floor(seconds / 3600);
+            seconds  -= hrs * 3600;
+            var minutes = Math.floor(seconds / 60);
+            seconds  -= minutes * 60;
+
+            if(months > 0){
+                string += months + "m";
+            }
+            if(days > 0){
+                string += days + "d ";
+            }
+            if(hrs > 0){
+                string += hrs + "h";
+            }
+            if(minutes > 0){
+                string += minutes + "m";
+            }
+            string += seconds + "sec";
+
+            return string;
+        },
+        convertToKm(input){
+            var string = "";
+            var metres = parseInt(input);
+
+            var kilo = Math.floor( metres / 1000);
+            metres -= kilo;
+
+            if(kilo > 1){
+                string += kilo + "." + metres + "km";
+            } else {
+                string += metres + "m";
+            }
+
+            return string;
         }
-
-
-        /*headers: { Authorization: "Bearer " + token } */
     }
 });
 
@@ -211,6 +290,13 @@ function setMapboxMarker(coords) {
 }
 
 function setMapboxLine(coords) {
+    var routeLayer = mapVar.getLayer('route');
+
+    if(routeLayer !== undefined ){
+        mapVar.removeLayer('route');
+        mapVar.removeSource('route');
+    }
+
     mapVar.addLayer({
         id: 'route',
         type: 'line',
@@ -249,7 +335,7 @@ function setMapboxLine(coords) {
             lng,
             lat
         ],
-        zoom: 11,
+        zoom: 9,
         speed: 0.7,
         curve: 1
     });

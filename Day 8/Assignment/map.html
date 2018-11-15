@@ -20,10 +20,9 @@
 </head>
 <body>
 <section>
-    <div id='map'></div>
-    <div id="app" class="container" style="z-index: 0">
+    <div id="app" class="container" style="z-index: 10">
         <form v-on:submit.prevent>
-            <div class="field">
+            <div class="field" style="z-index: 10">
                 <input class="input is-rounded" id="start" placeholder="Start" type="text"
                        v-model="start" maxlength="256"
                        @keyup="getStart">
@@ -32,7 +31,7 @@
                        @keyup="getDest">
                 <button type="submit" class="button is-primary is-rounded" @click="route">Route</button>
             </div>
-            <div style="zindex: 10;">
+            <div style="z-index: 10;">
                 <div class="startSugg notification" v-if="hasStartItems" v-for="item in startItems"
                      @click="setPoint(item, true)">
                     {{ item.place_name }}
@@ -43,16 +42,36 @@
                     {{ item.place_name }}
                 </div>
 
-                <div class="columns is-multiline is-mobile" > <!-- style="margin-left: 2.5em !important;" -->
-                    <div class="column is-5 is-centered" v-if="hasJourneyItems" v-for="item in journeyItems"
-                         @click="selectIten(item)">
-                            {{ item.name }}
+                <div class="startSugg notification" v-if="hasJourneyItems" v-for="item in journeyItems"
+                     @click="selectItin(item)">
+                    <div class="media">
+                        <div class="media-left">
+                            <div v-if="isTrain(item)">
+                                <span class="icon">
+                                    <i class="fas fa-subway"></i>
+                                </span>
+                            </div>
+                            <div v-else>
+                                <span class="icon">
+                                    <i class="fas fa-walking"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="media-content">
+                            <p><span class="bold">Distance:</span> {{ convertToKm(item.distance.value) }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span class="bold">Duration:</span> {{ convertSeconds(item.duration) }}</p>
+                            <p><span class="bold">Depart:</span> {{ new Date(item.departureTime).toLocaleDateString() }}
+                                {{ new Date(item.departureTime).toLocaleTimeString() }}</p>
+                            <p><span class="bold">Arrival:</span> {{ new Date(item.arrivalTime).toLocaleDateString() }}
+                                {{ new Date(item.arrivalTime).toLocaleTimeString() }}</p>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </form>
     </div>
+    <div id='map'></div>
 </section>
 <script src="js/map.js"></script>
 </body>
