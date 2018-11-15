@@ -1,4 +1,4 @@
-
+"use strict";
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibXJsb3N0Y2hhciIsImEiOiJjam11bDZ5bXAxbDJnM3BsOHU3bzVqYnB0In0.wKmk4XFOrj1NIPocvdl7Zw';
 const mapVar = new mapboxgl.Map({
@@ -11,6 +11,10 @@ const mapVar = new mapboxgl.Map({
 const vueApp = new Vue({
     el: "#app",
     data: {
+        CLIENT_ID: "3efde9ea-fcaf-44b6-8180-76e8933c61da",
+        CLIENT_SECRET: "oWXmg3eFFPFl97mcYMZ3KBXMc22MmtTnJ+XeweV/G3g=",
+        myTransAccPoint: "",
+
         start: "",
         hasStartItems: false,
         startItems: [],
@@ -21,20 +25,51 @@ const vueApp = new Vue({
         destiItems: [],
         destiCoor: [],
 
-        routeData: []
+        directionData: [],
+
+        hasJourneyItems: true,
+        journeyItems: []
+    },
+    async created() {
+        if (this.hasValidToken()) {
+            this.myTransAccPoint = this.getTokenFomCache();
+        } else {
+            this.getTokenFromApi();
+        }
+
+        this.journeyItems.push({
+            name: "test"
+        })
+        this.journeyItems.push({
+            name: "test"
+        })
+        this.journeyItems.push({
+            name: "test"
+        })
+        this.journeyItems.push({
+            name: "test"
+        })
+        this.journeyItems.push({
+            name: "test"
+        })
+        this.journeyItems.push({
+            name: "test"
+        })
+
     },
     methods: {
-        route: function(){
-            if(this.startCoor.length > 0 && this.destiCoor.length > 0){
-                this.getRoute();
+        route: function () {
+            if (this.startCoor.length > 0 && this.destiCoor.length > 0) {
+                //this.getRoute();
+                this.getItineraries();
             } else {
                 // Give the user an error message here
             }
         },
-        getRoute: async function(){
+        getRoute: async function () {
             await axios.get("https://api.mapbox.com/directions/v5/mapbox/driving/"
                 + this.startCoor[0] + "," + this.startCoor[1] + ";"
-                + this.destiCoor[0] + "," + this.destiCoor[1],{
+                + this.destiCoor[0] + "," + this.destiCoor[1], {
                 params: {
                     geometries: "geojson",
                     access_token: mapboxgl.accessToken
@@ -43,23 +78,24 @@ const vueApp = new Vue({
                 .then(success => {
                     //success.data.routes[0].geometry
                     //.routes[0]
-                    this.routeData = success.data.routes[0].geometry;
+                    this.directionData = success.data.routes[0].geometry;
 
-                    setMapboxLine(this.routeData);
+                    setMapboxLine(this.directionData);
                 })
                 .catch(error => {
                     console.log(error.message);
                 });
         },
-        getGeoEndpoint: async function(string, isStart = false){
+        getGeoEndpoint: async function (string, isStart = false) {
             await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + string + '.json', {
                 params: {
                     access_token: mapboxgl.accessToken,
                     routing: true,
                     types: 'address'
-                }})
+                }
+            })
                 .then(success => {
-                    if(isStart){
+                    if (isStart) {
                         this.startItems = success.data.features;
                         this.hasStartItems = true;
                     } else {
@@ -68,17 +104,17 @@ const vueApp = new Vue({
                     }
                 })
                 .catch(error => {
-                    console.log(error.data.message);
+                    console.log(error.message);
                 });
         },
-        getStart: _.debounce(function() {
+        getStart: _.debounce(function () {
             this.getGeoEndpoint(this.start, true)
         }, 500),
-        getDest: _.debounce(function() {
+        getDest: _.debounce(function () {
             this.getGeoEndpoint(this.destination, false)
         }, 500),
-        setPoint: function(item, isStart = false){
-            if(isStart){
+        setPoint: function (item, isStart = false) {
+            if (isStart) {
                 this.hasStartItems = false;
                 this.startItems = [];
 
@@ -97,17 +133,75 @@ const vueApp = new Vue({
             }
         },
 
+        hasValidToken: function () {
+            var token = localStorage.getItem('myTransportToken');
+            var storageDate = localStorage.getItem('myTransportTokenStoreDate');
+
+            if (token) {
+                var convertedDate = parseInt(storageDate.replace(/,/gi, ''));
+                var dateNow = Date.now();
+
+                return convertedDate + 3600 * 1000 >= dateNow;
+            }
+
+            return false;
+        },
+        getTokenFomCache: function () {
+            var token = localStorage.getItem('myTransportToken');
+
+            if (token === null || token === undefined || token === 'undefined') {
+                this.getTokenFromApi()
+            }
+
+            return token
+        },
+        setToken: function (token) {
+            localStorage.setItem('myTransportToken', token);
+            localStorage.setItem('myTransportTokenStoreDate', Date.now().toString())
+        },
+        getTokenFromApi: async function () {
+            var form = new FormData();
+            form.append("client_id", this.CLIENT_ID);
+            form.append("client_secret", this.CLIENT_SECRET);
+            form.append("grant_type", "client_credentials");
+            form.append("scope", "transportapi:all");
+
+            await axios.post('https://identity.whereismytransport.com/connect/token',
+                form, {
+                headers: {
+                    responseType: 'json'
+                }})
+                .then(response => {
+                    var token = response.data.access_token;
+
+                    this.setToken(token);
+                    this.myTransAccPoint = token;
+                })
+                .catch(error => {
+                    console.log(error.message);
+                })
+        },
+
+        getItineraries: async function () {
+
+        },
+        selectIten: function (iten) {
+
+        }
+
+
+        /*headers: { Authorization: "Bearer " + token } */
     }
 });
 
-function setMapboxMarker(coords){
+function setMapboxMarker(coords) {
     new mapboxgl.Marker({draggable: false})
-        .setLngLat([coords[0] , coords[1]])
+        .setLngLat([coords[0], coords[1]])
         .addTo(mapVar);
 
     mapVar.flyTo({
         center: [
-            coords[0] ,
+            coords[0],
             coords[1]
         ],
         zoom: 14,
@@ -116,7 +210,7 @@ function setMapboxMarker(coords){
     });
 }
 
-function setMapboxLine(coords){
+function setMapboxLine(coords) {
     mapVar.addLayer({
         id: 'route',
         type: 'line',
@@ -138,13 +232,13 @@ function setMapboxLine(coords){
     var lat = 0;
     var num = 0;
 
-    if(length % 2 === 0){
-        num = length/2;
+    if (length % 2 === 0) {
+        num = length / 2;
 
         lng = coordinates[num][0];
         lat = coordinates[num][1];
     } else {
-        num = (length+1)/2;
+        num = (length + 1) / 2;
 
         lng = coordinates[num][0];
         lat = coordinates[num][1];
@@ -152,7 +246,7 @@ function setMapboxLine(coords){
 
     mapVar.flyTo({
         center: [
-            lng ,
+            lng,
             lat
         ],
         zoom: 11,
